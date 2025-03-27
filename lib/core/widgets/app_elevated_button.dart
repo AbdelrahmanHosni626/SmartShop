@@ -7,27 +7,31 @@ class AppElevatedButton extends StatelessWidget {
   final VoidCallback onPressed;
   final EdgeInsetsGeometry? padding;
   final BorderRadiusGeometry? borderRadius;
+  final bool isLoading;
 
-  const AppElevatedButton(
-      {super.key,
-      required this.text,
-      required this.onPressed,
-      this.padding, this.borderRadius,
-      });
+  const AppElevatedButton({
+    super.key,
+    required this.text,
+    required this.onPressed,
+    this.padding,
+    this.borderRadius,
+    required this.isLoading,
+  });
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         shape: RoundedRectangleBorder(
-          borderRadius:borderRadius ?? BorderRadius.circular(12.r),
+          borderRadius: borderRadius ?? BorderRadius.circular(12.r),
         ),
         padding: padding ?? EdgeInsets.all(20.r),
       ),
       onPressed: onPressed,
-      child: AppText(
-        text: text,
-      ),
+      child:
+          isLoading
+              ? Center(child: CircularProgressIndicator())
+              : AppText(text: text),
     );
   }
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smartshop/core/helpers/spacing.dart';
 import 'package:smartshop/core/widgets/custom_app_bar.dart';
+import 'package:smartshop/features/bottom_navigation_bar/logic/bottom_nav_cubit.dart';
 import 'package:smartshop/features/profile/ui/widgets/general_section.dart';
 import 'package:smartshop/features/profile/ui/widgets/others_section.dart';
 import 'package:smartshop/features/profile/ui/widgets/please_login.dart';
@@ -29,7 +31,7 @@ class ProfileScreen extends StatelessWidget {
               const SettingSection(),
               const Divider(thickness: 1),
               verticalSpace(20),
-              const OthersSection(),
+              OthersSection(bottomNavCubit: context.read<BottomNavCubit>(),),
 
             ],
           ),

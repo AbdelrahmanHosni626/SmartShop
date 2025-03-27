@@ -52,7 +52,7 @@ class AppEmptyBag extends StatelessWidget {
             verticalSpace(20),
             AppElevatedButton(
               text: buttonText,
-              onPressed: () {},
+              onPressed: () {}, isLoading: false,
             ),
           ],
         ),
