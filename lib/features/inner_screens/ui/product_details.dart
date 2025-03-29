@@ -7,7 +7,7 @@ import 'package:smartshop/core/routing/routes.dart';
 import 'package:smartshop/core/widgets/app_bar_leading.dart';
 import 'package:smartshop/core/widgets/app_text.dart';
 import 'package:smartshop/features/home/data/models/product_model.dart';
-import 'package:smartshop/features/profile/ui/widgets/app_bar_title.dart';
+import 'package:smartshop/features/user/ui/widgets/app_bar_title.dart';
 
 import '../../../core/widgets/app_heart_icon.dart';
 
@@ -28,8 +28,7 @@ class ProductDetails extends StatelessWidget {
             alignment: Alignment.topLeft,
             child: IconButton(
               icon: const Icon(Icons.shopping_cart_outlined),
-              onPressed: ()
-              {
+              onPressed: () {
                 context.pushNamed(Routes.bottomNavigationBarScreen[2]);
               },
             ),
@@ -82,9 +81,7 @@ class ProductDetails extends StatelessWidget {
                       child: ElevatedButton.icon(
                         icon: const Icon(Icons.add_shopping_cart_rounded),
                         onPressed: () {},
-                        label: const AppText(
-                          text: 'Added To Card',
-                        ),
+                        label: const AppText(text: 'Added To Card'),
                       ),
                     ),
                   ],
@@ -104,10 +101,7 @@ class ProductDetails extends StatelessWidget {
                     ),
                   ),
                   const Spacer(),
-                  AppText(
-                    text: product.productCategory,
-                    color: Colors.blue,
-                  ),
+                  AppText(text: product.productCategory, color: Colors.blue),
                 ],
               ),
               verticalSpace(20),
