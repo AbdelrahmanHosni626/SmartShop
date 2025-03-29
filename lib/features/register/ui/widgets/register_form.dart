@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:smartshop/core/helpers/extensions.dart';
 import 'package:smartshop/core/helpers/form_validators.dart';
 import 'package:smartshop/core/helpers/spacing.dart';
-import 'package:smartshop/core/routing/routes.dart';
 import 'package:smartshop/core/widgets/app_elevated_button.dart';
 import 'package:smartshop/core/widgets/app_text_form_field.dart';
+import 'package:smartshop/features/register/logic/register_cubit.dart';
 
 class RegisterForm extends StatefulWidget {
-  const RegisterForm({super.key});
+  final bool isLoading;
+  const RegisterForm({super.key, required this.isLoading});
 
   @override
   State<RegisterForm> createState() => _RegisterFormState();
@@ -95,7 +96,9 @@ class _RegisterFormState extends State<RegisterForm> {
             keyboardType: TextInputType.visiblePassword,
             validator: (value) {
               return FormValidators.repeatPasswordValidator(
-                  value: value, password: passwordController.text);
+                value: value,
+                password: passwordController.text,
+              );
             },
             onFieldSubmitted: (value) {
               if (registerFormKey.currentState!.validate()) {}
@@ -111,10 +114,19 @@ class _RegisterFormState extends State<RegisterForm> {
           SizedBox(
             width: double.infinity,
             child: AppElevatedButton(
+              isLoading: widget.isLoading,
               padding: EdgeInsets.all(1.r),
-              onPressed: ()
-              {
-                context.pushNamed(Routes.bottomNavigationBarScreen);
+              onPressed: () {
+                final registerCubit = context.read<RegisterCubit>();
+                if (registerFormKey.currentState!.validate()) {
+                  registerCubit.registerWithEmailAndPassword(
+                    email: emailController.text.trim(),
+                    userName: userNameController.text.trim(),
+                    password: passwordController.text.trim(),
+                    confirmPassword: confirmPasswordController.text.trim(),
+
+                  );
+                }
               },
               text: 'Sign up',
             ),

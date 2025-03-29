@@ -1,37 +1,78 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smartshop/core/helpers/extensions.dart';
 import 'package:smartshop/core/helpers/spacing.dart';
+import 'package:smartshop/core/routing/routes.dart';
 import 'package:smartshop/core/widgets/app_bar_leading.dart';
 import 'package:smartshop/core/widgets/app_text.dart';
 import 'package:smartshop/features/profile/ui/widgets/app_bar_title.dart';
 import 'package:smartshop/features/register/logic/register_cubit.dart';
 import 'package:smartshop/features/register/logic/register_states.dart';
 import 'package:smartshop/features/register/ui/widgets/register_form.dart';
+import 'package:smartshop/generated/assets.dart';
 
-class RegisterScreen extends StatelessWidget {
+class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
 
   @override
+  State<RegisterScreen> createState() => _RegisterScreenState();
+}
+
+class _RegisterScreenState extends State<RegisterScreen> {
+  bool isLoading= false;
+  @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return BlocProvider(
       create: (context) => RegisterCubit(),
       child: Scaffold(
         appBar: AppBar(
           leading: const AppBarLeading(),
-          title: const AppBarTitle(
-            title: 'SmartShop',
-            fontSize: 25,
-          ),
+          title: const AppBarTitle(title: 'SmartShop', fontSize: 25),
           centerTitle: true,
         ),
         body: BlocConsumer<RegisterCubit, RegisterStates>(
-          listener: (context, state) {},
+          listener: (context, state) {
+            if (state is RegisterLoadingState) {
+              isLoading = true;
+            }
+            if (state is RegisterErrorState) {
+              isLoading = false;
+              showDialog(
+                barrierDismissible: false,
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    actionsAlignment: MainAxisAlignment.center,
+                    content: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Image.asset(Assets.imagesWarning, height: 100.h),
+                        verticalSpace(20),
+                        AppText(text: state.error.toString()),
+                      ],
+                    ),
+                    actions: [
+                      TextButton(
+                        child: const Text(
+                          'OK',
+                          style: TextStyle(color: Colors.red),
+                        ),
+                        onPressed: () {
+                          Navigator.canPop(context) ? context.pop() : null;
+                        },
+                      ),
+                    ],
+                  );
+                },
+              );
+            }
+            if (state is RegisterSuccessState) {
+              isLoading = false;
+              context.pushNamed(Routes.bottomNavigationBarScreen);
+            }
+          },
           builder: (context, state) {
-            var cubit = RegisterCubit.get(context);
             return Padding(
               padding: const EdgeInsets.all(20),
               child: Center(
@@ -45,7 +86,7 @@ class RegisterScreen extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                       verticalSpace(20),
-                      Align(
+                      /*Align(
                         alignment: Alignment.center,
                         child: SizedBox(
                           width: size.width * 0.35.w,
@@ -151,9 +192,9 @@ class RegisterScreen extends StatelessWidget {
                             ],
                           ),
                         ),
-                      ),
+                      ),*/
                       verticalSpace(30),
-                      const RegisterForm(),
+                      RegisterForm(isLoading: isLoading),
                     ],
                   ),
                 ),

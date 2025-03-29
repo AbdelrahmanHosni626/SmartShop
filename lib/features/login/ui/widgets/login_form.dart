@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:smartshop/core/helpers/extensions.dart';
 import 'package:smartshop/core/helpers/form_validators.dart';
 import 'package:smartshop/core/helpers/spacing.dart';
-import 'package:smartshop/core/routing/routes.dart';
 import 'package:smartshop/core/widgets/app_elevated_button.dart';
 import 'package:smartshop/core/widgets/app_text_form_field.dart';
+import 'package:smartshop/features/login/logic/login_cubit.dart';
 
 class LoginForm extends StatefulWidget {
+  final bool isLoading;
 
-
-  const LoginForm({super.key});
+  const LoginForm({super.key, required this.isLoading});
 
   @override
   State<LoginForm> createState() => _LoginFormState();
@@ -81,10 +81,17 @@ class _LoginFormState extends State<LoginForm> {
           SizedBox(
             width: double.infinity,
             child: AppElevatedButton(
+              isLoading: widget.isLoading,
               padding: EdgeInsets.all(1.r),
               onPressed: ()
               {
-                context.pushNamed(Routes.bottomNavigationBarScreen);
+                if(loginFormKey.currentState!.validate()){
+                  final loginCubit = context.read<LoginCubit>();
+                  loginCubit.loginWithEmailAndPassword(
+                    email: emailController.text.trim(),
+                    password: passwordController.text.trim(),
+                  );
+                }
               },
               text: 'Sign in',
             ),

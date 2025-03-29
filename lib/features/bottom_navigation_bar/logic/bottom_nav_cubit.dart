@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
@@ -60,5 +61,15 @@ class BottomNavCubit extends Cubit<BottomNavStates> {
     return ProductModel.products
         .firstWhere((element) => element.productId == id);
 
+  }
+
+  Future<void> signOut() async {
+    emit(SignOutLoadingState());
+    try {
+      await FirebaseAuth.instance.signOut();
+      emit(SignOutSuccessState());
+    } on FirebaseAuthException catch (e) {
+      emit(SignOutErrorState(e.toString()));
+    }
   }
 }
