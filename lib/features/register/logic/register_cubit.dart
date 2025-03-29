@@ -65,22 +65,28 @@ class RegisterCubit extends Cubit<RegisterStates> {
     required String userName,
     required String userEmail,
   }) async {
-    User user = credential.user!;
     emit(SaveUserDataLoadingState());
+
+    User userData = credential.user!;
+    UserModel user = UserModel(
+      userId: userData.uid,
+      userName: userName,
+      userEmail: userEmail,
+      userImage: "",
+      userCart: [],
+      userWishlist: [],
+      createdAt: Timestamp.now(),
+    );
 
     await FirebaseFirestore.instance
         .collection("users")
-        .doc(user.uid)
-        .set({
-          "userId": user.uid,
-          "userName": userName,
-          "userEmail": userEmail,
-          "userImage": user.photoURL,
-          "createdAt": Timestamp.now(),
-          "userCart": [],
-          "userWishlist": [],
+        .doc(userData.uid)
+        .set(user.toJson())
+        .then((value) {
+          emit(SaveUserDataSuccessState());
         })
-        .then((value) => emit(SaveUserDataSuccessState()))
-        .catchError((error) => emit(SaveUserDataErrorState(error.toString())));
+        .catchError((error) {
+          emit(SaveUserDataErrorState(error.toString()));
+        });
   }
 }
