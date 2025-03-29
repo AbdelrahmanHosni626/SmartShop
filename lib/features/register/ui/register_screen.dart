@@ -6,10 +6,10 @@ import 'package:smartshop/core/helpers/spacing.dart';
 import 'package:smartshop/core/routing/routes.dart';
 import 'package:smartshop/core/widgets/app_bar_leading.dart';
 import 'package:smartshop/core/widgets/app_text.dart';
-import 'package:smartshop/features/profile/ui/widgets/app_bar_title.dart';
 import 'package:smartshop/features/register/logic/register_cubit.dart';
 import 'package:smartshop/features/register/logic/register_states.dart';
 import 'package:smartshop/features/register/ui/widgets/register_form.dart';
+import 'package:smartshop/features/user/ui/widgets/app_bar_title.dart';
 import 'package:smartshop/generated/assets.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -20,7 +20,7 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
-  bool isLoading= false;
+  bool isLoading = false;
   @override
   Widget build(BuildContext context) {
     return BlocProvider(

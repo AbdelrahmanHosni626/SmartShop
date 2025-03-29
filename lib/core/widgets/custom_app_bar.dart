@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:smartshop/features/profile/ui/widgets/app_bar_title.dart';
+import 'package:smartshop/features/user/ui/widgets/app_bar_title.dart';
 import 'package:smartshop/generated/assets.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -11,10 +11,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       leading: Image.asset(Assets.bagShoppingCart),
-      title: AppBarTitle(
-        title: title,
-        fontSize: fontSize,
-      ),
+      title: AppBarTitle(title: title, fontSize: fontSize),
     );
   }
 

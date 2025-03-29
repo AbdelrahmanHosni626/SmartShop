@@ -9,7 +9,7 @@ import 'package:smartshop/features/login/logic/login_cubit.dart';
 import 'package:smartshop/features/login/logic/login_states.dart';
 import 'package:smartshop/features/login/ui/widgets/login_form.dart';
 import 'package:smartshop/features/login/ui/widgets/or_connect_using.dart';
-import 'package:smartshop/features/profile/ui/widgets/app_bar_title.dart';
+import 'package:smartshop/features/user/ui/widgets/app_bar_title.dart';
 import 'package:smartshop/generated/assets.dart';
 
 class LoginScreen extends StatefulWidget {

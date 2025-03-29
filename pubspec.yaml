@@ -85,7 +85,7 @@ flutter:
     - assets/images/bag/
     - assets/images/banners/
     - assets/images/categories/
-    - assets/images/profile/
+    - assets/images/user/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
