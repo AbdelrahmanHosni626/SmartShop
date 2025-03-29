@@ -8,7 +8,6 @@ import 'package:smartshop/core/helpers/spacing.dart';
 import 'package:smartshop/core/routing/routes.dart';
 import 'package:smartshop/core/widgets/app_text.dart';
 import 'package:smartshop/features/bottom_navigation_bar/logic/bottom_nav_cubit.dart';
-import 'package:smartshop/features/bottom_navigation_bar/logic/bottom_nav_states.dart';
 import 'package:smartshop/generated/assets.dart';
 
 class OthersSection extends StatelessWidget {

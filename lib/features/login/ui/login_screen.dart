@@ -32,10 +32,10 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
         body: BlocConsumer<LoginCubit, LoginStates>(
           listener: (context, state) {
-            if (state is LoginLoadingState) {
+            if (state is LoginWithEmailLoadingState) {
               isLoading = true;
             }
-            if (state is LoginErrorState) {
+            if (state is LoginWithEmailErrorState) {
               isLoading = false;
               showDialog(
                 barrierDismissible: false,
@@ -66,7 +66,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 },
               );
             }
-            if (state is LoginSuccessState) {
+            if (state is LoginWithEmailSuccessState) {
               isLoading = false;
               context.pushNamed(Routes.bottomNavigationBarScreen);
             }
