@@ -10,7 +10,8 @@ import 'package:smartshop/features/register/logic/register_cubit.dart';
 
 class RegisterForm extends StatefulWidget {
   final bool isLoading;
-  const RegisterForm({super.key, required this.isLoading});
+  final String file;
+  const RegisterForm({super.key, required this.isLoading, required this.file});
 
   @override
   State<RegisterForm> createState() => _RegisterFormState();
@@ -118,14 +119,19 @@ class _RegisterFormState extends State<RegisterForm> {
               padding: EdgeInsets.all(1.r),
               onPressed: () {
                 final registerCubit = context.read<RegisterCubit>();
-                if (registerFormKey.currentState!.validate()) {
-                  registerCubit.registerWithEmailAndPassword(
-                    email: emailController.text.trim(),
-                    userName: userNameController.text.trim(),
-                    password: passwordController.text.trim(),
-                    confirmPassword: confirmPasswordController.text.trim(),
-
+                if (widget.file.isEmpty) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text("Please Choose a photo")),
                   );
+                } else {
+                  if (registerFormKey.currentState!.validate()) {
+                    registerCubit.registerWithEmailAndPassword(
+                      email: emailController.text.trim(),
+                      userName: userNameController.text.trim(),
+                      password: passwordController.text.trim(),
+                      confirmPassword: confirmPasswordController.text.trim(),
+                    );
+                  }
                 }
               },
               text: 'Sign up',

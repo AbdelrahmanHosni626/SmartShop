@@ -20,6 +20,15 @@ class SaveUserDataErrorState extends RegisterStates {
   SaveUserDataErrorState(this.error);
 }
 
+class SaveUserImageLoadingState extends RegisterStates {}
+
+class SaveUserImageSuccessState extends RegisterStates {}
+
+class SaveUserImageErrorState extends RegisterStates {
+  final String error;
+  SaveUserImageErrorState(this.error);
+}
+
 class RegisterChangePasswordVisibilityState extends RegisterStates {}
 class RegisterChangeConfirmPasswordVisibilityState extends RegisterStates {}
 

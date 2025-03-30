@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:smartshop/features/register/data/models/user_model.dart';
@@ -41,6 +43,27 @@ class RegisterCubit extends Cubit<RegisterStates> {
 
   late dynamic credential;
 
+  Future<String> _uploadUserImage() async {
+    emit(SaveUserImageLoadingState());
+
+    try {
+      final Reference ref = FirebaseStorage.instance
+          .ref()
+          .child("usersImages")
+          .child("${credential.user!.uid}.jpg");
+
+      await ref.putFile(file!);
+      String imageUrl = await ref.getDownloadURL();
+
+      emit(SaveUserImageSuccessState());
+      return imageUrl;
+    } catch (error) {
+      debugPrint("error is: $error @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+      emit(SaveUserImageErrorState(error.toString()));
+      return "";
+    }
+  }
+
   Future<void> registerWithEmailAndPassword({
     required String email,
     required String userName,
@@ -53,17 +76,26 @@ class RegisterCubit extends Cubit<RegisterStates> {
         email: email,
         password: password,
       );
-      saveUserData(userEmail: email, userName: userName);
-      print("email is: $email password is: $password **********************");
+      String? imageUrl;
+      if (file != null) {
+        imageUrl = await _uploadUserImage();
+      }
+      await _saveUserData(
+        userEmail: email,
+        userName: userName,
+        userImage: imageUrl ?? "",
+      );
+      debugPrint("email is: $email password is: $password ImageUrl is: $file");
       emit(RegisterSuccessState());
     } on FirebaseAuthException catch (e) {
       emit(RegisterErrorState(e.toString()));
     }
   }
 
-  Future<void> saveUserData({
+  Future<void> _saveUserData({
     required String userName,
     required String userEmail,
+    required String userImage,
   }) async {
     emit(SaveUserDataLoadingState());
 
@@ -72,7 +104,7 @@ class RegisterCubit extends Cubit<RegisterStates> {
       userId: userData.uid,
       userName: userName,
       userEmail: userEmail,
-      userImage: "",
+      userImage: userImage,
       userCart: [],
       userWishlist: [],
       createdAt: Timestamp.now(),

@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smartshop/core/helpers/extensions.dart';
 import 'package:smartshop/core/helpers/spacing.dart';
@@ -23,6 +26,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   bool isLoading = false;
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return BlocProvider(
       create: (context) => RegisterCubit(),
       child: Scaffold(
@@ -73,6 +77,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             }
           },
           builder: (context, state) {
+            var cubit = RegisterCubit.get(context);
             return Padding(
               padding: const EdgeInsets.all(20),
               child: Center(
@@ -86,7 +91,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         fontWeight: FontWeight.bold,
                       ),
                       verticalSpace(20),
-                      /*Align(
+                      Align(
                         alignment: Alignment.center,
                         child: SizedBox(
                           width: size.width * 0.35.w,
@@ -97,21 +102,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 padding: const EdgeInsets.all(8.0),
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(8.r),
-                                  child: cubit.file != null
-                                      ? SizedBox(
-                                    width: double.infinity,
-                                        child: Image.file(
-                                            cubit.file!,
-                                            fit: BoxFit.fill,
+                                  child:
+                                      cubit.file != null
+                                          ? SizedBox(
+                                            width: double.infinity,
+                                            child: Image.file(
+                                              File(cubit.file!.path),
+                                              fit: BoxFit.fill,
+                                            ),
+                                          )
+                                          : Container(
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(8.r),
+                                              border: Border.all(),
+                                            ),
                                           ),
-                                      )
-                                      : Container(
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(8.r),
-                                            border: Border.all(),
-                                          ),
-                                        ),
                                 ),
                               ),
                               Positioned(
@@ -136,65 +142,72 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                                 ),
                                                 verticalSpace(30),
                                                 TextButton.icon(
-                                                    onPressed: () {
-                                                      cubit
-                                                          .getImageFromCamera();
-                                                      if (Navigator.canPop(
-                                                          context)) {
-                                                        context.pop();
-                                                      }
-                                                    },
-                                                    icon: const Icon(Icons
-                                                        .camera_alt_outlined),
-                                                    label:
-                                                        const Text('Camera')),
+                                                  onPressed: () {
+                                                    cubit.getImageFromCamera();
+                                                    if (Navigator.canPop(
+                                                      context,
+                                                    )) {
+                                                      context.pop();
+                                                    }
+                                                  },
+                                                  icon: const Icon(
+                                                    Icons.camera_alt_outlined,
+                                                  ),
+                                                  label: const Text('Camera'),
+                                                ),
                                                 TextButton.icon(
-                                                    onPressed: () {
-                                                      cubit.getImageFromGallery();
-                                                      if (Navigator.canPop(
-                                                          context)) {
-                                                        context.pop();
-                                                      }
-                                                    },
-                                                    icon: const Icon(
-                                                        Icons.photo_outlined),
-                                                    label:
-                                                        const Text('Gallery')),
+                                                  onPressed: () {
+                                                    cubit.getImageFromGallery();
+                                                    if (Navigator.canPop(
+                                                      context,
+                                                    )) {
+                                                      context.pop();
+                                                    }
+                                                  },
+                                                  icon: const Icon(
+                                                    Icons.photo_outlined,
+                                                  ),
+                                                  label: const Text('Gallery'),
+                                                ),
                                                 TextButton.icon(
-                                                    onPressed: () {
-                                                      cubit.removeImage();
-                                                      if (Navigator.canPop(
-                                                          context)) {
-                                                        context.pop();
-                                                      }
-                                                    },
-                                                    icon: const Icon(
-                                                        Icons
-                                                            .remove_circle_outline,
-                                                        color: Colors.red),
-                                                    label: const Text(
-                                                      'Remove',
-                                                      style: TextStyle(
-                                                          color: Colors.red),
-                                                    )),
+                                                  onPressed: () {
+                                                    cubit.removeImage();
+                                                    if (Navigator.canPop(
+                                                      context,
+                                                    )) {
+                                                      context.pop();
+                                                    }
+                                                  },
+                                                  icon: const Icon(
+                                                    Icons.remove_circle_outline,
+                                                    color: Colors.red,
+                                                  ),
+                                                  label: const Text(
+                                                    'Remove',
+                                                    style: TextStyle(
+                                                      color: Colors.red,
+                                                    ),
+                                                  ),
+                                                ),
                                               ],
                                             ),
                                           );
                                         },
                                       );
                                     },
-                                    icon: const Icon(
-                                      IconlyLight.camera,
-                                    ),
+                                    icon: const Icon(IconlyLight.camera),
                                   ),
                                 ),
                               ),
                             ],
                           ),
                         ),
-                      ),*/
+                      ),
                       verticalSpace(30),
-                      RegisterForm(isLoading: isLoading),
+                      RegisterForm(
+                        isLoading: isLoading,
+                        file: cubit.file?.path ?? "",
+                      ),
                     ],
                   ),
                 ),
